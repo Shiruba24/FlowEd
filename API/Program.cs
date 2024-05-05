@@ -9,11 +9,12 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
         var configuration = builder.Configuration;
         // Add services to the container.
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddAuthorization();
         builder.Services.AddAuthentication();
+
         builder.Services.AddDbContext<StoreDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
@@ -47,22 +48,23 @@ internal class Program
 
         app.UseHttpsRedirection();
 
+        app.MapControllers();
     }
 
-    private static void RunInitialisers(WebApplication app)
+    private static async void RunInitialisers(WebApplication app)
     {
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;
+        var logger = services.GetRequiredService<ILogger<Program>>();
         try
         {
             var context = services.GetRequiredService<StoreDbContext>();
-            context.Database.Migrate();
-            ////context.Database.EnsureCreated();
-            //DbInitializer.Initialize(context);
+            await context.Database.MigrateAsync();
+            await StoreContextSeed.SeedAsync(context, logger);
         }
         catch (Exception ex)
         {
-            var logger = services.GetRequiredService<ILogger<Program>>();
+
             logger.LogError(ex, "An error occurred creating the DB.");
         }
     }

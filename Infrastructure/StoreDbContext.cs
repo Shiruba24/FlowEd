@@ -1,4 +1,5 @@
 ﻿using Entity;
+using Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,13 @@ namespace Infrastructure
         }
 
         public DbSet<Course> Courses { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new CourseConfiguration());
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

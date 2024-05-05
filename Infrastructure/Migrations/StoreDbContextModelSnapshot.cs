@@ -40,6 +40,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("real");
 
                     b.Property<decimal>("Rating")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Title")
