@@ -5,6 +5,7 @@ import Homepage from "./pages/Homepage";
 import LoginPage from "./pages/Login";
 import DetailPage from "./pages/DetailPage";
 import Navigation from "./components/Navigation";
+import "antd/dist/reset.css";
 function App() {
 
   return (
