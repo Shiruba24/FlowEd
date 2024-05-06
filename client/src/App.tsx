@@ -1,30 +1,18 @@
-import React, { useState, useEffect } from "react";
-import logo from "./logo.svg";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import axios from "axios";
-
+import Homepage from "./pages/Homepage";
+import LoginPage from "./pages/Login";
+import DetailPage from "./pages/DetailPage";
 function App() {
-  const [courses, setCourses] = useState([]);
-
-  useEffect(() => {
-    axios.get("http://localhost:5226/api/courses").then((response) => {
-      console.log(response);
-      setCourses(response.data);
-    });
-  }, []);
 
   return (
-    <div className="App">
-      <ul>
-        {courses.map((course: any, index) => {
-          return (
-            <li key={index}>
-              {course.id}
-              {course.title}
-            </li>
-          );
-        })}
-      </ul>
+    <div>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/detail" element={<DetailPage />} />
+      </Routes>
     </div>
   );
 }
