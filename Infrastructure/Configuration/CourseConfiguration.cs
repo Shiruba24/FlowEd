@@ -13,10 +13,18 @@ namespace Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Course> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Property(c => c.Rating)
-                .HasPrecision(18, 2);
+            builder.Property(p => p.Id).IsRequired();
 
+            builder.Property(p => p.Title).IsRequired().HasMaxLength(150);
+            builder.Property(p => p.SubTitle).IsRequired();
+            builder.Property(p => p.Language).IsRequired();
+            builder.Property(p => p.Description).IsRequired();
+            builder.Property(p => p.Instructor).IsRequired();
+            builder.Property(p => p.Image).IsRequired();
+
+            builder.Property(p => p.Rating).HasColumnType("decimal(18,1)");
+
+            //builder.HasOne(b => b.Category).WithMany().HasForeignKey(b => b.Category);
         }
     }
 }

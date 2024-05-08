@@ -9,10 +9,6 @@
 		<ProjectReference Include="..\Entity\Entity.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="SeedData\" />
-	</ItemGroup>
-
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
