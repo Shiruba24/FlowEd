@@ -1,3 +1,4 @@
+using Entity;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -42,6 +43,8 @@ internal class Program
                        .AllowAnyMethod();
             });
         });
+
+        services.AddScoped<ICourseRepository, CourseRepository>();
     }
     private static void Configure(WebApplication app)
     {

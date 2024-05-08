@@ -10,23 +10,24 @@ namespace API.Controllers
 
     public class CoursesController : BaseController
     {
-        private readonly StoreDbContext _context;
+        private readonly ICourseRepository _repository;
 
-        public CoursesController(StoreDbContext context)
+        public CoursesController(ICourseRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Course>>> GetCourse()
         {
-            return await _context.Courses.ToListAsync();
+            var courses = await _repository.GetCoursesAsync();
+            return Ok(courses);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Course>> GetCourse(Guid id)
         {
-            return await _context.Courses.FindAsync(id);
+            return await _repository.GetCourseById(id);
         }
     }
 }
