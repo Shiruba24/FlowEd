@@ -1,4 +1,5 @@
 ﻿using Entity;
+using Entity.Interfaces;
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

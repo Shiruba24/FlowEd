@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20240508092019_CourseConfiguration")]
+    [Migration("20240509075902_CourseConfiguration")]
     partial class CourseConfiguration
     {
         /// <inheritdoc />
@@ -39,7 +39,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Entity.Course", b =>
@@ -78,8 +78,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("real");
 
                     b.Property<decimal>("Rating")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,1)");
 
                     b.Property<int>("Students")
                         .HasColumnType("int");
@@ -90,7 +89,8 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
 
