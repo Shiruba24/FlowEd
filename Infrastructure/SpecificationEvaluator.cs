@@ -1,0 +1,26 @@
+﻿using Entity.Specification;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Infrastructure
+{
+    public class SpecificationEvaluator<T> where T : class
+    {
+        public static IQueryable<T> GetQuery(IQueryable<T> inputQeury, ISpecification<T> spec)
+        {
+            var query = inputQeury;
+            if (spec.Criteria != null)
+            {
+                query = query.Where(spec.Criteria);
+            }
+
+            query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
+
+            return query;
+        }
+    }
+}

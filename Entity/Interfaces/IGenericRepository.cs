@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entity.Specification;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,9 @@ namespace Entity.Interfaces
         Task<IReadOnlyList<T>> ListAllAsync();
 
         Task<T> GetByIdAsync(dynamic id);
+
+        Task<T> GetEntityWithSpec(ISpecification<T> spec);
+
+        Task<IReadOnlyList<T>> ListWithSpec(ISpecification<T> spec);
     }
 }
