@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Entity.Entities;
 
 namespace Entity.Interfaces
 {
-    public interface ICourseRepository
+    public interface IGenericRepository<T>
     {
-        Task<Course> GetCourseById(Guid id);
+        Task<IReadOnlyList<T>> ListAllAsync();
 
-        Task<IReadOnlyList<Course>> GetCoursesAsync();
-
+        Task<T> GetByIdAsync(dynamic id);
     }
 }

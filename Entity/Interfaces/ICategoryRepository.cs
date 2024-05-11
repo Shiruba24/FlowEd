@@ -7,11 +7,10 @@ using Entity.Entities;
 
 namespace Entity.Interfaces
 {
-    public interface ICourseRepository
+    public interface ICategoryRepository
     {
-        Task<Course> GetCourseById(Guid id);
+        Task<IReadOnlyList<Category>> GetCategoriesAsync(); // <T>
 
-        Task<IReadOnlyList<Course>> GetCoursesAsync();
-
+        Task<Category> GetCategoryByIdAsync(int id);
     }
 }

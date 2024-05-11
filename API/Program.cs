@@ -1,5 +1,7 @@
+using API.Helpers;
 using Entity.Interfaces;
 using Infrastructure;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -34,6 +36,9 @@ internal class Program
         services.AddSwaggerGen();
         services.AddAuthorization();
         services.AddAuthentication();
+
+        services.AddAutoMapper(typeof(MappingProfiles));
+
         services.AddCors(options =>
         {
             options.AddPolicy("AllowLocalhost3000", builder =>
@@ -43,8 +48,9 @@ internal class Program
                        .AllowAnyMethod();
             });
         });
-
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<ICourseRepository, CourseRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
     }
     private static void Configure(WebApplication app)
     {

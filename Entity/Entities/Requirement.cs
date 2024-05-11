@@ -1,6 +1,6 @@
-﻿namespace Entity
+﻿namespace Entity.Entities
 {
-    public class Learning
+    public class Requirement
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

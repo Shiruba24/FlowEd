@@ -1,4 +1,4 @@
-﻿using Entity;
+﻿using Entity.Entities;
 using Entity.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure
+namespace Infrastructure.Repositories
 {
     public class CourseRepository : ICourseRepository
     {
@@ -20,12 +20,18 @@ namespace Infrastructure
 
         public async Task<Course> GetCourseById(Guid id)
         {
-            return await _context.Courses.FindAsync(id);
+            return await _context.Courses
+                .Include(c => c.Category)
+                .Include(c => c.Learnings)
+                .Include(c => c.Requirements)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IReadOnlyList<Course>> GetCoursesAsync()
         {
-            return await _context.Courses.ToListAsync();
+            return await _context.Courses
+                .Include(c => c.Category)
+                .ToListAsync();
         }
     }
 }

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Entity;
 
-namespace Entity
+namespace API.Dto
 {
-    public class Course : BaseEntity
+    public class CourseDto
     {
+        public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public float Price { get; set; }
         public string Instructor { get; set; } = string.Empty;
@@ -21,10 +16,10 @@ namespace Entity
         public string Language { get; set; } = string.Empty;
         public string Level { get; set; } = string.Empty;
 
-        public ICollection<Requirement> Requirements { get; set; } = new List<Requirement>();
-        public ICollection<Learning> Learnings { get; set; } = new List<Learning>();
-        public int CategoryId { get; set; }
-        public Category? Category { get; set; }
+        public ICollection<RequirementDto> Requirements { get; set; } = new List<RequirementDto>();
+        public ICollection<LearningDto> Learnings { get; set; } = new List<LearningDto>();
+
+        public string Category { get; set; } = string.Empty;
         public DateTime LastUpdated { get; set; } = DateTime.Now;
     }
 }

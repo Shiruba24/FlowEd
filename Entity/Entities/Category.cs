@@ -1,4 +1,4 @@
-﻿namespace Entity
+﻿namespace Entity.Entities
 {
     public class Category
     {

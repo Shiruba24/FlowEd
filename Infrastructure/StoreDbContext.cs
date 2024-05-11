@@ -1,4 +1,4 @@
-﻿using Entity;
+﻿using Entity.Entities;
 using Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System;
