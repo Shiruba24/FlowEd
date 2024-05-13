@@ -1,7 +1,10 @@
+using API.ErrorResponse;
 using API.Helpers;
+using API.Middleware;
 using Entity.Interfaces;
 using Infrastructure;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -51,6 +54,23 @@ internal class Program
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.InvalidModelStateResponseFactory = actionContext =>
+            {
+                var errors = actionContext.ModelState
+                    .Where(e => e.Value.Errors.Count > 0)
+                    .SelectMany(x => x.Value.Errors)
+                    .Select(x => x.ErrorMessage).ToArray();
+
+                var errorResponse = new ApiValidationErrorResponse
+                {
+                    Errors = errors
+                };
+
+                return new BadRequestObjectResult(errorResponse);
+            };
+        });
     }
     private static void Configure(WebApplication app)
     {
@@ -60,13 +80,17 @@ internal class Program
 
     private static void ConfigureMiddleware(WebApplication app)
     {
+        app.UseMiddleware<ExceptionMiddleware>();
+        app.UseStatusCodePagesWithReExecute("/redirect/{0}");
         app.UseRouting();
+
         app.UseAuthentication();
         app.UseAuthorization();
+
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.UseDeveloperExceptionPage();
+
             app.UseSwagger();
             app.UseSwaggerUI();
         }
