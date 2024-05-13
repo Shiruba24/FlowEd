@@ -11,6 +11,8 @@ namespace Entity.Specification
     {
         Expression<Func<T, bool>> Criteria { get; }
         List<Expression<Func<T, object>>> Includes { get; }
+        Expression<Func<T, object>> Sort { get; }
+        Expression<Func<T, object>> SortByDescending { get; }
 
     }
 }
