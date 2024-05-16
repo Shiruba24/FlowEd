@@ -1,6 +1,7 @@
 import axios, {AxiosResponse} from "axios";
 import {Course} from "../models/course";
-
+import { PaginatedCourse } from "../models/paginatedCourse";
+import { Category } from "../models/category";
 axios.defaults.baseURL = "http://localhost:5226/api";
 
 const responseBody = <T> (response: AxiosResponse<T>) => response.data;
@@ -13,11 +14,16 @@ const requests = {
 };
 
 const Courses = {
-    list: () => requests.get<Course[]>("/courses")
+    list: () => requests.get<PaginatedCourse>("/courses")
+};
+
+const Categories = {
+    list: () => requests.get<Category[]>("/categories")
 };
 
 const agent = {
-    Courses
+    Courses,
+    Categories
 };
 
 export default agent;

@@ -21,7 +21,8 @@ internal class Program
         ConfigurationServices(services);
         builder.Services.AddDbContext<StoreDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+            x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
         });
         var app = builder.Build();
 

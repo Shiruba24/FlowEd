@@ -12,9 +12,13 @@ namespace Entity.Specification
     public class CoursesWithCategoriesSpecification : BaseSpecification<Course>
     {
         public CoursesWithCategoriesSpecification(CourseParams courseParams) : base(x =>
-        !courseParams.CategoryId.HasValue || x.CategoryId == courseParams.CategoryId)
+        (string.IsNullOrEmpty(courseParams.Search) || x.Title.ToLower().Contains(courseParams.Search)) &&
+        (!courseParams.CategoryId.HasValue || x.CategoryId == courseParams.CategoryId))
         {
             IncludeMethod(x => x.Category);
+            IncludeMethod(c => c.Requirements);
+            IncludeMethod(c => c.Learnings);
+            SortMethod(c => c.Title);
             ApplyPagination(courseParams.PageSize, courseParams.PageSize * (courseParams.PageIndex - 1));
 
             if (!string.IsNullOrEmpty(courseParams.Sort))
@@ -39,6 +43,7 @@ namespace Entity.Specification
             IncludeMethod(c => c.Requirements);
             IncludeMethod(c => c.Learnings);
             IncludeMethod(c => c.Category);
+            SortMethod(x => x.Id);
         }
     }
 }
