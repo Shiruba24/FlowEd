@@ -14,11 +14,13 @@ const requests = {
 };
 
 const Courses = {
-    list: () => requests.get<PaginatedCourse>("/courses")
+    list: () => requests.get<PaginatedCourse>("/courses"),
+    getById: (id: string) => requests.get<Course>(`/courses/${id}`)
 };
 
 const Categories = {
-    list: () => requests.get<Category[]>("/categories")
+    list: () => requests.get<Category[]>("/categories"),
+    getCategory: (id: number) => requests.get<Category>(`/categories/${id}`)
 };
 
 const agent = {
