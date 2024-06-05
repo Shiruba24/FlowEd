@@ -1,20 +1,19 @@
-﻿using Entity.Entities;
-using Infrastructure.Configuration;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Entity.Entities;
+using Infrastructure.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
     public class StoreDbContext : DbContext
     {
-        public StoreDbContext(DbContextOptions options) : base(options)
-        {
-        }
+        public StoreDbContext(DbContextOptions options)
+            : base(options) { }
 
         public DbSet<Course> Courses { get; set; }
         public DbSet<Category> Categories { get; set; }

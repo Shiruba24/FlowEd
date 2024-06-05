@@ -20,7 +20,6 @@
                 404 => "Resource not found.",
                 500 => "Internal server error",
                 _ => "An error has occured"
-
             };
         }
     }

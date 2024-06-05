@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-
     public class CategoriesController : BaseController
     {
         private readonly IGenericRepository<Category> _repository;
@@ -25,7 +24,9 @@ namespace API.Controllers
         public async Task<ActionResult<IReadOnlyList<CategoriesDto>>> GetCategories()
         {
             var categories = await _repository.ListAllAsync();
-            return Ok(_mapper.Map<IReadOnlyList<Category>, IReadOnlyList<CategoriesDto>>(categories));
+            return Ok(
+                _mapper.Map<IReadOnlyList<Category>, IReadOnlyList<CategoriesDto>>(categories)
+            );
         }
 
         [HttpGet("{id}")]

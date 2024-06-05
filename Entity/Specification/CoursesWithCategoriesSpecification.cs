@@ -1,25 +1,32 @@
-﻿using Entity.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Entity.Entities;
 
 namespace Entity.Specification
 {
     public class CoursesWithCategoriesSpecification : BaseSpecification<Course>
     {
-        public CoursesWithCategoriesSpecification(CourseParams courseParams) : base(x =>
-        (string.IsNullOrEmpty(courseParams.Search) || x.Title.ToLower().Contains(courseParams.Search)) &&
-        (!courseParams.CategoryId.HasValue || x.CategoryId == courseParams.CategoryId))
+        public CoursesWithCategoriesSpecification(CourseParams courseParams)
+            : base(x =>
+                (
+                    string.IsNullOrEmpty(courseParams.Search)
+                    || x.Title.ToLower().Contains(courseParams.Search)
+                ) && (!courseParams.CategoryId.HasValue || x.CategoryId == courseParams.CategoryId)
+            )
         {
             IncludeMethod(x => x.Category);
             IncludeMethod(c => c.Requirements);
             IncludeMethod(c => c.Learnings);
             SortMethod(c => c.Title);
-            ApplyPagination(courseParams.PageSize, courseParams.PageSize * (courseParams.PageIndex - 1));
+            ApplyPagination(
+                courseParams.PageSize,
+                courseParams.PageSize * (courseParams.PageIndex - 1)
+            );
 
             if (!string.IsNullOrEmpty(courseParams.Sort))
             {
@@ -38,7 +45,8 @@ namespace Entity.Specification
             }
         }
 
-        public CoursesWithCategoriesSpecification(Guid id) : base(x => x.Id == id)
+        public CoursesWithCategoriesSpecification(Guid id)
+            : base(x => x.Id == id)
         {
             IncludeMethod(c => c.Requirements);
             IncludeMethod(c => c.Learnings);

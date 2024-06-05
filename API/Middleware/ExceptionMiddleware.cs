@@ -1,6 +1,6 @@
-﻿using API.ErrorResponse;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
+using API.ErrorResponse;
 
 namespace API.Middleware
 {
@@ -10,7 +10,11 @@ namespace API.Middleware
         private readonly ILogger<ExceptionMiddleware> _logger;
         private readonly RequestDelegate _next;
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, IHostEnvironment env)
+        public ExceptionMiddleware(
+            RequestDelegate next,
+            ILogger<ExceptionMiddleware> logger,
+            IHostEnvironment env
+        )
         {
             _env = env;
             _logger = logger;
@@ -30,7 +34,11 @@ namespace API.Middleware
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
                 var response = _env.IsDevelopment()
-                    ? new ApiException((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString())
+                    ? new ApiException(
+                        (int)HttpStatusCode.InternalServerError,
+                        ex.Message,
+                        ex.StackTrace.ToString()
+                    )
                     : new ApiException((int)HttpStatusCode.InternalServerError);
 
                 var options = new JsonSerializerOptions

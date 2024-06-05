@@ -1,18 +1,23 @@
-﻿using Entity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Entity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure
 {
     public class StoreContextSeed
     {
-        public static async Task SeedDataIfEmpty<T>(DbSet<T> dbSet, StoreDbContext context, string jsonFilePath) where T : class
+        public static async Task SeedDataIfEmpty<T>(
+            DbSet<T> dbSet,
+            StoreDbContext context,
+            string jsonFilePath
+        )
+            where T : class
         {
             if (!dbSet.Any())
             { // Если коллекция пуста
@@ -30,17 +35,32 @@ namespace Infrastructure
                 }
             }
         }
+
         public static async Task SeedAsync(StoreDbContext context, ILogger logger)
         {
-
             try
             {
-                await SeedDataIfEmpty(context.Categories, context, "../Infrastructure/SeedData/categories.json");
-                await SeedDataIfEmpty(context.Courses, context, "../Infrastructure/SeedData/courses.json");
+                await SeedDataIfEmpty(
+                    context.Categories,
+                    context,
+                    "../Infrastructure/SeedData/categories.json"
+                );
+                await SeedDataIfEmpty(
+                    context.Courses,
+                    context,
+                    "../Infrastructure/SeedData/courses.json"
+                );
 
-
-                await SeedDataIfEmpty(context.Learnings, context, "../Infrastructure/SeedData/learnings.json");
-                await SeedDataIfEmpty(context.Requirements, context, "../Infrastructure/SeedData/requirements.json");
+                await SeedDataIfEmpty(
+                    context.Learnings,
+                    context,
+                    "../Infrastructure/SeedData/learnings.json"
+                );
+                await SeedDataIfEmpty(
+                    context.Requirements,
+                    context,
+                    "../Infrastructure/SeedData/requirements.json"
+                );
 
                 //if (!context.Categories.Any())
                 //{
@@ -94,7 +114,6 @@ namespace Infrastructure
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-
             }
         }
     }

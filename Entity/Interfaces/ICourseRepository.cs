@@ -12,6 +12,5 @@ namespace Entity.Interfaces
         Task<Course> GetCourseById(Guid id);
 
         Task<IReadOnlyList<Course>> GetCoursesAsync();
-
     }
 }

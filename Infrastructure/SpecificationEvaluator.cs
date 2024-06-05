@@ -1,14 +1,15 @@
-﻿using Entity.Specification;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entity.Specification;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
-    public class SpecificationEvaluator<T> where T : class
+    public class SpecificationEvaluator<T>
+        where T : class
     {
         public static IQueryable<T> GetQuery(IQueryable<T> inputQuery, ISpecification<T> spec)
         {

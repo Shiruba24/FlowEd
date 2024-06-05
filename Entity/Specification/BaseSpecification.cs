@@ -23,7 +23,8 @@ namespace Entity.Specification
         public Expression<Func<T, bool>> Criteria { get; }
 
         // Список включаемых в выборку выражений (например, для загрузки связанных данных)
-        public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
+        public List<Expression<Func<T, object>>> Includes { get; } =
+            new List<Expression<Func<T, object>>>();
 
         // Выражение для сортировки по возрастанию
         public Expression<Func<T, object>> Sort { get; private set; }
@@ -33,8 +34,10 @@ namespace Entity.Specification
 
         // Количество элементов для выборки (пагинация)
         public int Take { get; private set; }
+
         // Количество элементов, которые нужно пропустить (пагинация)
         public int Skip { get; private set; }
+
         // Флаг, указывающий, используется ли пагинация
         public bool IsPaging { get; private set; }
 

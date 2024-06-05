@@ -1,11 +1,11 @@
-﻿using Entity.Entities;
-using Entity.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entity.Entities;
+using Entity.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -20,8 +20,8 @@ namespace Infrastructure.Repositories
 
         public async Task<Course> GetCourseById(Guid id)
         {
-            return await _context.Courses
-                .Include(c => c.Category)
+            return await _context
+                .Courses.Include(c => c.Category)
                 .Include(c => c.Learnings)
                 .Include(c => c.Requirements)
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -29,9 +29,7 @@ namespace Infrastructure.Repositories
 
         public async Task<IReadOnlyList<Course>> GetCoursesAsync()
         {
-            return await _context.Courses
-                .Include(c => c.Category)
-                .ToListAsync();
+            return await _context.Courses.Include(c => c.Category).ToListAsync();
         }
     }
 }

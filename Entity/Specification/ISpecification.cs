@@ -16,6 +16,5 @@ namespace Entity.Specification
         int Take { get; }
         int Skip { get; }
         bool IsPaging { get; }
-
     }
 }

@@ -21,8 +21,10 @@ internal class Program
         ConfigurationServices(services);
         builder.Services.AddDbContext<StoreDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-            x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+            options.UseSqlServer(
+                configuration.GetConnectionString("DefaultConnection"),
+                x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
+            );
         });
         var app = builder.Build();
 
@@ -45,12 +47,13 @@ internal class Program
 
         services.AddCors(options =>
         {
-            options.AddPolicy("AllowLocalhost3000", builder =>
-            {
-                builder.WithOrigins("http://localhost:3000")
-                       .AllowAnyHeader()
-                       .AllowAnyMethod();
-            });
+            options.AddPolicy(
+                "AllowLocalhost3000",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+                }
+            );
         });
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<ICourseRepository, CourseRepository>();
@@ -59,20 +62,19 @@ internal class Program
         {
             options.InvalidModelStateResponseFactory = actionContext =>
             {
-                var errors = actionContext.ModelState
-                    .Where(e => e.Value.Errors.Count > 0)
+                var errors = actionContext
+                    .ModelState.Where(e => e.Value.Errors.Count > 0)
                     .SelectMany(x => x.Value.Errors)
-                    .Select(x => x.ErrorMessage).ToArray();
+                    .Select(x => x.ErrorMessage)
+                    .ToArray();
 
-                var errorResponse = new ApiValidationErrorResponse
-                {
-                    Errors = errors
-                };
+                var errorResponse = new ApiValidationErrorResponse { Errors = errors };
 
                 return new BadRequestObjectResult(errorResponse);
             };
         });
     }
+
     private static void Configure(WebApplication app)
     {
         ConfigureMiddleware(app);
@@ -91,7 +93,6 @@ internal class Program
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-
             app.UseSwagger();
             app.UseSwaggerUI();
         }
@@ -99,7 +100,6 @@ internal class Program
         app.UseHttpsRedirection();
 
         app.MapControllers();
-
     }
 
     private static async void RunInitialisers(WebApplication app)
@@ -115,7 +115,6 @@ internal class Program
         }
         catch (Exception ex)
         {
-
             logger.LogError(ex, "An error occurred creating the DB.");
         }
     }
