@@ -1,4 +1,6 @@
-﻿using API.ErrorResponse;
+﻿using API.Dto;
+using API.ErrorResponse;
+using AutoMapper;
 using Entity.Entities;
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -9,26 +11,30 @@ namespace API.Controllers
 {
     public class BasketController : BaseController
     {
+        private readonly IMapper _mapper;
         private readonly StoreDbContext _context;
 
-        public BasketController(StoreDbContext context)
+        public BasketController(StoreDbContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<Basket>> GetBasket()
+        public async Task<ActionResult<BasketDto>> GetBasket()
         {
             var basket = await ExtractBasket();
 
             if (basket == null)
                 return NotFound(new ApiResponse(404));
 
-            return Ok(basket);
+            var basketResponse = _mapper.Map<Basket, BasketDto>(basket);
+
+            return Ok(basketResponse);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Basket>> AddItemToBasket(Guid courseId)
+        public async Task<ActionResult<BasketDto>> AddItemToBasket(Guid courseId)
         {
             Basket? basket = await ExtractBasket();
 
@@ -42,10 +48,31 @@ namespace API.Controllers
             basket.AddCourseItem(course);
 
             var result = await _context.SaveChangesAsync() > 0;
+
+            var basketResponse = _mapper.Map<Basket, BasketDto>(basket);
+
             if (result)
-                return basket;
+                return basketResponse;
             return BadRequest(new ApiResponse(400, "Problem saving item to basket"));
         }
+
+        [HttpDelete]
+
+        public async Task<ActionResult> RemoveBasketItem(Guid courseId)
+        {
+            var basket = await ExtractBasket();
+
+            if (basket == null)
+                return NotFound(new ApiResponse(404));
+
+            basket.RemoveCourse(courseId);
+
+            var result = await _context.SaveChangesAsync() > 0;
+            if (result)
+                return Ok();
+            return BadRequest(new ApiResponse(400, "Problem removing item from the basket"));
+        }
+
 
         private Basket? CreateBasket()
         {
@@ -66,6 +93,7 @@ namespace API.Controllers
             return await _context
                 .Baskets.Include(b => b.Items)
                 .ThenInclude(i => i.Course)
+                .OrderBy(i => i.Id)
                 .FirstOrDefaultAsync(x => x.ClientId == Request.Cookies["clientId"]);
         }
     }

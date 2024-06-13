@@ -20,7 +20,7 @@ namespace Entity.Entities
             }
         }
 
-        public void RemoveCourseItem(Guid courseId)
+        public void RemoveCourse(Guid courseId)
         {
             var course = Items.FirstOrDefault(item => item.CourseId == courseId);
             Items.Remove(course);

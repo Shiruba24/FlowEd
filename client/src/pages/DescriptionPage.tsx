@@ -3,11 +3,15 @@ import { Course, Learning, Requirement } from "../models/course";
 import { useParams } from "react-router";
 import agent from "../actions/agent";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/store/configureStore";
+import { setBasket } from "../redux/slice/basketSlice";
 
 const DescriptionPage = () => {
     const [course, setCourse] = useState<Course>();
     const { id } = useParams<{ id: string }>();
 
+    const { basket } = useAppSelector((state) => state.basket);
+    const dispatch = useAppDispatch();
 
 
 
@@ -17,6 +21,11 @@ const DescriptionPage = () => {
         });
     }, [id]);
 
+    const addToCart = (courseId: string) => {
+        agent.Baskets.addItem(courseId)
+            .then((response) => dispatch(setBasket(response)))
+            .catch((error) => console.log(error));
+    };
     const getParsedDate = (strDate: any) => {
         const strSplitDate = String(strDate).split(" ");
         let date: any = new Date(strSplitDate[0]);
@@ -142,10 +151,17 @@ const DescriptionPage = () => {
                         </div>
                     </div>
                     <div className="description-page__sidebar__box__button">
+                        {basket?.items.find((item) => item.courseId === course?.id) !== undefined ? (
+                            <Link className="description-page__sidebar__box__button__cart" to="/basket">
 
-                        Go to cart
+                                Go to Cart
 
-                        <div className="description-page__sidebar__box__button--text">
+                            </Link>) :
+                            (<div onClick={() => addToCart(course!.id)} className="description-page__sidebar__box__button__cart">
+                                Add to Cart
+                            </div>)}
+
+                        <div className="description-page__sidebar__box__button__text">
                             Book now
                         </div>
                     </div>

@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import Logo from "../assets/logo.png";
 import * as FaIcons from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { useAppSelector } from "../redux/store/configureStore";
 const Navigation = () => {
     const [sideBar, setSideBar] = useState(false);
 
     const showSideBar = () => setSideBar(!sideBar);
 
+    const { basket } = useAppSelector((state) => state.basket);
+
+    const basketCount = basket?.items.length;
 
     return (
         <div className="nav-container">
@@ -21,15 +26,15 @@ const Navigation = () => {
                                 <li className="nav-menu-items__header">
                                     Navigation
                                 </li>
-                                <li>Categories</li>
                                 <li>Course</li>
                             </ul>
                         </nav>
                     </div>
                     <img className="nav__left__logo" src={Logo} alt="logo" />
                     <ul className="nav__left__list">
-                        <li className="nav__left__list__item">Categories</li>
-                        <li className="nav__left__list__item">Courses</li>
+                        <Link to="/">
+                            <li className="nav__left__list__item">Home</li>
+                        </Link>
                     </ul>
                 </div>
                 <div className="nav__right">
@@ -42,6 +47,12 @@ const Navigation = () => {
                             <FaIcons.FaSearch />
                         </button>
                     </form>
+                    <Link to="/basket">
+                        <div className="nav__right__cart">
+                            <FaIcons.FaShoppingCart />
+                            {basketCount! > 0 && (<span className="nav__right__cart__count">{basketCount}</span>)}
+                        </div>
+                    </Link>
                 </div>
             </div>
         </div>

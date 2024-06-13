@@ -51,7 +51,7 @@ internal class Program
                 "AllowLocalhost3000",
                 builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+                    builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                 }
             );
         });

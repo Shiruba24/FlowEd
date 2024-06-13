@@ -5,13 +5,21 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./sass/main.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { StoreProvider } from "./context/StoreContext";
+import { Provider } from "react-redux";
+import { store } from "./redux/store/configureStore";
+
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <Router>
-    <App />
+    <StoreProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </StoreProvider>
   </Router>
 );
 

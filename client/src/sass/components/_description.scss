@@ -266,7 +266,7 @@
           cursor: pointer;
         }
 
-        &--text {
+        &__text {
           background-image: linear-gradient(
             to left,
             ($color-secondary-dark),
@@ -283,7 +283,7 @@
           }
         }
 
-        &--cart {
+        &__cart {
           background-color: $color-primary;
         }
       }
