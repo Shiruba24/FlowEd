@@ -4,9 +4,9 @@ import { Row, Col, Card } from "antd";
 import * as FaIcons from "react-icons/fa";
 import { Course } from "../models/course";
 import { Link } from "react-router-dom";
-import agent from "../actions/agent";
+
 import { useAppDispatch, useAppSelector } from "../redux/store/configureStore";
-import { setBasket } from "../redux/slice/basketSlice";
+import { addBasketItemAsync } from "../redux/slice/basketSlice";
 interface Props {
     course: Course
 }
@@ -47,11 +47,7 @@ const ShowCourses = ({ course }: Props) => {
         return options;
     };
 
-    const addToCart = (courseId: string) => {
-        agent.Baskets.addItem(courseId)
-            .then((response) => dispatch(setBasket(response)))
-            .catch((error) => console.log(error));
-    };
+
 
     return (
         <>
@@ -80,7 +76,7 @@ const ShowCourses = ({ course }: Props) => {
                                     Go to cart
                                 </div>
                             </Link> : (
-                                <div onClick={() => addToCart(course.id)} className="course__bottom__cart">Add to cart</div>
+                                <div onClick={() => dispatch(addBasketItemAsync({ courseId: course.id }))} className="course__bottom__cart">Add to cart</div>
                             )}
                     </div>
 
