@@ -6,11 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Entity.Entities;
 using Infrastructure.Configuration;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
-    public class StoreDbContext : DbContext
+    public class StoreDbContext : IdentityDbContext<User>
     {
         public StoreDbContext(DbContextOptions options)
             : base(options) { }
@@ -28,6 +30,14 @@ namespace Infrastructure
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            modelBuilder.Entity<IdentityRole>()
+                .HasData(
+                    new IdentityRole { Name = "Student", NormalizedName = "STUDENT" },
+                    new IdentityRole { Name = "Instructor", NormalizedName = "INSTRUCTOR" }
+                );
+
+
             //modelBuilder.ApplyConfiguration(new CourseConfiguration());
 
             //base.OnModelCreating(modelBuilder);

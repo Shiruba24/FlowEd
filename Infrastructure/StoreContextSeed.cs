@@ -5,6 +5,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Entity;
+using Entity.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -36,10 +38,30 @@ namespace Infrastructure
             }
         }
 
-        public static async Task SeedAsync(StoreDbContext context, ILogger logger)
+        public static async Task SeedAsync(StoreDbContext context, ILogger logger, UserManager<User> userManager)
         {
             try
             {
+                if (!userManager.Users.Any())
+                {
+                    var student = new User
+                    {
+                        UserName = "student",
+                        Email = "student@test.com",
+                    };
+
+                    await userManager.CreateAsync(student, "Password@123");
+                    await userManager.AddToRoleAsync(student, "Student");
+
+                    var instructor = new User
+                    {
+                        UserName = "instructor",
+                        Email = "instructor@test.com",
+                    };
+
+                    await userManager.CreateAsync(instructor, "Password@123");
+                    await userManager.AddToRolesAsync(instructor, new[] { "Instructor", "Student" });
+                }
                 await SeedDataIfEmpty(
                     context.Categories,
                     context,
@@ -61,6 +83,7 @@ namespace Infrastructure
                     context,
                     "../Infrastructure/SeedData/requirements.json"
                 );
+
 
                 //if (!context.Categories.Any())
                 //{

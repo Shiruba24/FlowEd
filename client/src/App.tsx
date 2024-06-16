@@ -14,6 +14,7 @@ import BasketPage from "./pages/BasketPage";
 import agent from "./actions/agent";
 import { setBasket } from "./redux/slice/basketSlice";
 import { useAppDispatch } from "./redux/store/configureStore";
+import Dashboard from "./pages/Dashboard";
 function App() {
   const dispatch = useAppDispatch();
   function getCookie(name: string) {
@@ -48,7 +49,7 @@ function App() {
         <Route path="/course/:id" element={<DescriptionPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/detail" element={<DetailPage />} />
-
+        <Route path="/profile" element={<Dashboard />} />
       </Routes>
     </div>
   );
